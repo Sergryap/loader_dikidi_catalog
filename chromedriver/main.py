@@ -6,6 +6,7 @@ import time
 import csv
 import random
 from authorization import password, tel, url_company, url_service
+from pprint import pprint
 
 
 def get_click_loader(driver, url=url_service):
@@ -48,7 +49,7 @@ def get_driver():
 	return webdriver.Chrome(options=options)
 
 
-def main():
+def load_data():
 	driver = get_driver()
 	try:
 		get_click_loader(driver=driver)
@@ -59,5 +60,19 @@ def main():
 		driver.quit()
 
 
+def get_data_client():
+	with open("clients_2022.08.05.csv", "r", newline='', encoding='utf-8') as csvfile:
+		clients = csv.reader(csvfile, delimiter=';')
+		return [
+			{
+				'name': client[0],
+				'tel': client[1],
+				'amount_vizit': client[9],
+				'last_visit': client[10],
+				'black_list': client[13]
+			} for client in clients][1:]
+
+
 if __name__ == '__main__':
-	main()
+	# load_data()
+	pprint(get_data_client())
